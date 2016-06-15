@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app>
 
   <head>
     <link data-require="angular.js@*" data-semver="2.0.0" rel="stylesheet" href="jj" />
@@ -8,9 +8,8 @@
     <script src="script.js"></script>
   </head>
 
-  <body ng-app>
-    <h1>Hello Plunker!</h1>
-    {{ 843 / 42 }}
+  <body ng-controller="MainController">
+    <h1>{{ message }} </h1>
   </body>
 
 </html>
