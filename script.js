@@ -1,6 +1,4 @@
-(function() {
-
-  
+(function() {  
 
   var app = angular.module("bookViewer", [])
 
@@ -12,32 +10,47 @@
     $http.defaults.headers.common["Accept"] = "application/json";
     $http.defaults.headers.common["Content-Type"] = "application/json";
 
-    var onUserComplete = function(response) {
-      $scope.user = response.data;
-      $http.get($scope.user.repos_url)
-        .then(hasResponse, hasError);
+    var $scope.order = function(book_id){
+      $http.get("http://localhost:3000/api/order?book_id="+book_id+"&user_id="+$scope.loggedinUser.id)
+        .then(hasResponse, onError);
+    }
+
+    var $scope.pay = function(){
+      $http.get("http://localhost:3000/api/pay?&user_id="+$scope.loggedinUser.id)
+        .then(hasResponse, onError);
+    }
+
+    var $scope.restock = function(isbn,price,quantity){
+      $http.get("http://localhost:3000/api/fill_stock?&isbn="+isbn+"&price="+price+"&quantity="+quantity)
+        .then(hasResponse, onError);
+    }
+
+    var userIsCompleted = function(response) {
+      $scope.loggedinUser = response.data;
+      $http.get("http://localhost:3000/api/all_books")
+        .then(hasResponse, onError);
     };
     
-    var userLogedIn = function(response)    {
-      $scope.user = response.data;
+    var userLoggedIn = function(response)    {
+      $scope.loggedinUser = response.data;
     }
     
     var hasResponse = function(response){
-      $scope.repos = response.data;
+      $scope.books = response.data;
     }
 
-    var hasError = function(reason) {
+    var onError = function(reason) {
       $scope.error = "Could not fetch the data!"
     };
     
     $scope.search = function(booktitle){
       $http.get("https://api.github.com/users/"+ booktitle)
-      .then(onUserComplete, hasError);
+      .then(userIsCompleted, onError);
     }
     
     $scope.login = function(loginUsername, loginPassword){
       $http.get("http://localhost:3000/api/login?username="+loginUsername+
-      "&password="+loginPassword).then(userLogedIn, hasError);
+      "&password="+loginPassword).then(userLoggedIn, onError);
     }
 
     $scope.booktitle = "Harry Potter test";

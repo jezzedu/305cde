@@ -21,25 +21,28 @@
     <input type="submit" value="Login" />
   </form>
 
-  <div ng-show="user">
+  <div ng-show="loggedinUser">
     <form name="searchBook" ng-submit="search(booktitle)">
       <input type="search" required placeholder="Book to find" ng-model="booktitle" />
       <input type="submit" value="Search" />
     </form>
 
 
+
+
+
     <div>
-      <h2>{{user.name}}</h2>
+      <h2>{{loggedinUser.name}}</h2>
       <div>
-        <img ng-src="{{user.avatar_url}}" title="{{user.name}}" />
+        <img ng-src="{{loggedinUser.avatar_url}}" title="{{loggedinUser.name}}" />
       </div>
     </div>
 
     Order:
     <select ng-model="bookSortOrder">
       <option value="+name">Name</option>
-      <option value="-stargazers_count">Stars</option>
-      <option value="+language">Language</option>
+      <option value="-stargazers_count">Price</option>
+      <option value="+language">Stock</option>
     </select>
 
 
@@ -47,15 +50,15 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>Stars</th>
-          <th>Language</th>
+          <th>Price</th>
+          <th>Stock</th>
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="repo in repos | orderBy:bookSortOrder">
-          <td>{{repo.name}}</td>
-          <td>{{repo.stargazers_count | number}}</td>
-          <td>{{repo.language}}</td>
+        <tr ng-repeat="book in books | orderBy:bookSortOrder">
+          <td>{{book.name}}</td>
+          <td>{{book.price | number}}</td>
+          <td>{{book.stock}}</td>
         </tr>
 
       </tbody>
